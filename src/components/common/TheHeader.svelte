@@ -3,7 +3,7 @@
 </script>
 
 <nav class="flex items-center justify-center pt-8">
-	<ul class="flex items-center gap-12 rounded-lg bg-white p-4 shadow-lg">
+	<ul class="flex items-center gap-12 rounded-lg bg-white p-4 shadow-lg dark:bg-slate-800">
 		<li><a href="/">Home</a></li>
 		{#if signedIn}
 			<li><a href="/account">My account</a></li>

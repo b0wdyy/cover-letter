@@ -1,14 +1,12 @@
-<script>
+<script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import { writable } from 'svelte/store';
+	import { writable, type Unsubscriber } from 'svelte/store';
 
 	// TODO: pass as prop in main layout. Get from cookie.
 	// export let theme;
-	export const theme = writable('light');
-	/**
-	 * @type {import("svelte/store").Unsubscriber}
-	 */
-	let unsubscribe;
+	export const theme = writable<'light' | 'dark'>('light');
+
+	let unsubscribe: Unsubscriber;
 
 	export function toggleTheme() {
 		theme.update((t) => (t === 'light' ? 'dark' : 'light'));
@@ -17,12 +15,24 @@
 	onMount(() => {
 		const localTheme = localStorage.getItem('theme');
 
-		if (localTheme) {
-			theme.set(localTheme);
+		if (
+			localTheme === 'dark' ||
+			(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+		) {
+			document.documentElement.classList.add('dark');
+			localStorage.setItem('theme', 'dark');
+			theme.set('dark');
+		} else {
+			document.documentElement.classList.remove('dark');
 		}
 
 		unsubscribe = theme.subscribe((value) => {
-			document.documentElement.classList.remove('dark', 'light');
+			if (value === 'light') {
+				document.documentElement.classList.remove('dark');
+				localStorage.removeItem('theme');
+				return;
+			}
+
 			document.documentElement.classList.add(value);
 			localStorage.setItem('theme', value);
 		});
@@ -36,7 +46,7 @@
 </script>
 
 <button
-	class="fixed bottom-8 right-8 grid h-12 w-12 place-content-center rounded-full bg-white shadow-lg transition-colors hover:bg-gray-100 active:bg-gray-200"
+	class="fixed bottom-8 right-8 grid h-12 w-12 place-content-center rounded-full bg-white shadow-lg transition-colors hover:bg-gray-100 active:bg-gray-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-500 dark:active:bg-slate-600"
 	on:click={toggleTheme}
 >
 	<span class="sr-only">Toggle dark mode</span>

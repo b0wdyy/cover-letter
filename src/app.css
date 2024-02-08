@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  @apply bg-gray-100 dark:bg-slate-700 dark:text-white text-slate-900;
+  @apply bg-gray-100 dark:bg-slate-700 dark:text-white text-slate-900 font-Montserrat;
 }

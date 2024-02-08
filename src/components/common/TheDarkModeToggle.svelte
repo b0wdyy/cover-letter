@@ -29,12 +29,11 @@
 		unsubscribe = theme.subscribe((value) => {
 			if (value === 'light') {
 				document.documentElement.classList.remove('dark');
-				localStorage.removeItem('theme');
-				return;
+				localStorage.setItem('theme', 'light');
+			} else {
+				document.documentElement.classList.add('dark');
+				localStorage.setItem('theme', 'dark');
 			}
-
-			document.documentElement.classList.add(value);
-			localStorage.setItem('theme', value);
 		});
 	});
 
